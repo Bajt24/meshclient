@@ -1,5 +1,4 @@
-# Mesh - clientside
-
+# Mesh - client
 Mesh is a web conference system that you can run on your own machine. It uses peer to peer topology to save performance on server and the only thing users need is a web browser. It supports voice chat, video chat, screen share and more. 
 
 If you're looking for the server repository, checkout [this](https://github.com/bajt24/meshserver). 
