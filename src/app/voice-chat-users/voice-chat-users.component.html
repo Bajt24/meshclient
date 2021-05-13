@@ -1,0 +1,16 @@
+<li *ngFor="let item of this.ps.getAllUsers() | keyvalue" class="item">
+    
+    <span *ngIf="item.value.connected" class="user">
+        <i style="padding-right: 1em;" class="fas fa-user"></i> 
+        {{item.value.name}}
+        
+        
+        <i *ngIf="item.value.isMuted" class="fas fa-microphone-slash"></i>
+        <i *ngIf="item.value.videoStream" class="fas fa-video"></i>
+        <i *ngIf="item.value.screenStream" class="fas fa-desktop"></i>
+        
+        <input *ngIf="item.key != 'me'" type="range" min="0" max="1" step="0.01" class="custom-range" (input)="item.value.changeVolume($event.target.value)"> 
+        <p *ngIf="item.key != 'me'" style="margin-right: 1em; width: 1em; margin-bottom: 0;">{{(item.value.volume * 100).toFixed(0)}}</p>
+    </span>    
+
+</li>

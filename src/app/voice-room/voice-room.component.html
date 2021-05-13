@@ -1,0 +1,112 @@
+<app-permission-modal></app-permission-modal>
+<app-share-video-modal></app-share-video-modal>
+<app-screen-share-modal></app-screen-share-modal>
+<app-name-modal></app-name-modal>
+<app-share-link-modal></app-share-link-modal>
+<div class="w-100 h-100 d-flex">
+    <div class="d-flex h-100 w-100" id="top">
+        
+        <audio *ngIf="selectedUser && selectedUser.key != 'me'" [srcObject]="selectedUser.stream" autoplay [volume]="selectedUser.volume">
+
+        </audio>
+        
+        <div id="selectedUser" [class.h-100]="selectedUser.getSelectedStream() == null" *ngIf="selectedUser.getSelectedStream() == null">
+            <div class="item" style="width: 20vh; height: 20vh;" [class.micActive]="selectedUser.isSpeaking" *ngIf="selectedUser!=null && selectedUser.getSelectedStream() == null" [@myAnimation]>
+                {{selectedUser.name}}
+                
+                <span *ngIf="selectedUser.isMuted">
+                    <i class="fas fa-microphone-alt-slash"></i>
+                </span>
+            </div>
+        </div>
+        <div class="videoStream w-100 h-100 d-flex" *ngIf="selectedUser.getSelectedStream() != null" [@myAnimation]>
+            <div class="h-100 w-100" style="position:relative;">
+                <span class="videoUserLabel"> 
+                    <i class="fas fa-microphone-alt-slash" *ngIf="selectedUser.isMuted"></i> 
+                    {{selectedUser.name}}
+                </span>
+                <video class="h-100" style="width: 100%;" [srcObject]="selectedUser.getSelectedStream()" autoplay></video>
+            </div>
+        </div>
+
+        <div id="users" class="w-100" *ngIf="this.ps.getAllUsers().size >1">
+            <ng-container *ngFor="let item of this.ps.getAllUsers() | keyvalue" >
+                <ng-container *ngIf="item.value.connected">
+                    <div (click)="selectedUser==item.value ? selectedUser.toggleStream() : selectedUser = item.value" class="bottomPanelItem" *ngIf="(selectedUser == item.value && item.value.videoStream && item.value.screenStream) || (selectedUser != item.value)">
+                        <div class="h-100 w-100" style="position:relative;">
+                            <video *ngIf="item.value.getSecondStream()!=null" [@myAnimation] [srcObject]="item.value.getSecondStream()" autoplay style="height: 10vh"></video>
+                        </div>
+                        <div class="item itemBottomPanel" [class.micActive]="item.value.isSpeaking" *ngIf="item.value.getSecondStream()==null"  [@myAnimation]>
+                            <span>{{item.value.name}}</span>
+                            
+                        </div>
+                        <span *ngIf="item.value.isMuted" class="mutedIndicator">
+                            <i class="fas fa-microphone-alt-slash"></i>
+                        </span>
+                        
+                    </div>
+                    <audio [srcObject]="item.value.stream" autoplay [volume]="item.value.volume" *ngIf="item.key != 'me'">
+
+                    </audio>
+                </ng-container>
+            </ng-container>
+        </div>
+        
+        <div id="controlPanelParent">
+            <div class="btn-group" role="group" id="controlPanel">
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Share video" placement="top" (click)="openVideoModal()" *ngIf="this.ps.getPeer('me').videoStream==null">
+                    <i class="fas fa-video"></i>
+                    
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Stop video" placement="top" (click)="this.s.stopVideo(this.s.videoStream, this.streamVideoType)" *ngIf="this.ps.getPeer('me').videoStream!=null">
+                    <i class="fas fa-video-slash" ></i>
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light noTransition" mdbWavesEffect mdbTooltip="Mute microphone" placement="top" (click)="toggleMute()" *ngIf="!this.s.$microphoneMuted" [attr.disabled]="this.s.stream == null ? true : null">
+                    <i class="fas fa-microphone-alt"></i>
+                
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light noTransition" mdbWavesEffect mdbTooltip="Unmute microphone" placement="top" (click)="toggleMute()" *ngIf="this.s.$microphoneMuted">
+                    <i class="fas fa-microphone-alt-slash"></i>
+                
+                
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Share screen" placement="top" (click)="openScreenshareModal()" *ngIf="this.ps.getPeer('me').screenStream==null">
+                    <i class="fas fa-desktop"></i>
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Stop screenshare" placement="top" (click)="this.s.stopVideo(this.s.screenStream, this.streamScreenType)" *ngIf="this.ps.getPeer('me').screenStream!=null">
+                   
+                    <i class="fas fa-desktop"> <i class="fas fa-slash" style="position: absolute; left: -5%; top: 5%;"></i></i>
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Time since meeting started" placement="top">
+                    {{ timeSinceStart > 3600000 ? (timeSinceStart | date: "HH:mm:ss":'UTC') : (timeSinceStart | date: "mm:ss":'UTC')}}
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Chat" placement="top" (click)="this.toggleSidebar()" [style.padding-right]="this.unseenMessages != 0 ? '0.5em' : '0'">
+                    <i class="fas fa-comment-alt"><span *ngIf="this.unseenMessages != 0" style="position: absolute; top: -47%; left: 1%;" class="badge badge-danger ml-2">{{this.unseenMessages}}</span></i> 
+                </button>
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Share link" placement="top" (click)="openShareLinkModal()">
+                    <i class="fas fa-link"></i>
+                </button>
+                <!--
+                <button mdbBtn type="button" color="light" class="waves-light" mdbWavesEffect mdbTooltip="Settings" placement="top" (click)="openSettingsModal()">
+                    <i class="fas fa-cog"></i>
+                </button>
+                -->
+                <button mdbBtn type="button" color="danger" class="waves-light" mdbWavesEffect mdbTooltip="Leave call" placement="top" (click)="leaveCall()">
+                    <i class="fas fa-phone-slash"></i>
+                </button>
+            </div>
+        </div>
+    </div> 
+    <div class="h-100" id="sidepanel" [class.sidepanel-opened]="this.sidebarOpened">
+        <div id="header" class="d-flex">
+            <button type="button" class="close" aria-label="Close"  style="margin-left: 0.5em; margin-right: 0.5em;" (click)="toggleSidebar()">
+                <span aria-hidden="true">×</span>
+            </button>
+            <button class="col-xs-6 w-50 tab" (click)="this.chatTabSelected = true; this.unseenMessages = 0;" [class.selectedTab]="this.chatTabSelected" type="button"><i class="fas fa-comment-alt"></i> CHAT</button>
+            <button class="col-xs-6 w-50 tab" (click)="this.chatTabSelected = false" [class.selectedTab]="!this.chatTabSelected" type="button"><i class="fas fa-users"></i> USERS</button>
+        </div>
+        <app-voice-room-chat [hidden]="!this.chatTabSelected"></app-voice-room-chat>
+        <app-voice-chat-users [hidden]="this.chatTabSelected"></app-voice-chat-users>
+
+    </div>
+</div>

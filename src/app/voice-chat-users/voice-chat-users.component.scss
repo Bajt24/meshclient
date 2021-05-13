@@ -1,0 +1,37 @@
+:host {
+    height: 100%;
+}
+
+li {
+    list-style-type: none;
+}
+
+.item {
+    padding-bottom: 0.2em;
+    padding-top: 0.2em;
+    padding-left: 0.8em;
+    text-transform: uppercase;
+}
+
+i {
+    padding-right: 1em;    
+    padding-left: 1em;    
+}
+
+.user {
+    display: flex;
+
+}
+
+.custom-range {
+    margin-right: 1em;
+    width: 15em;
+    justify-self: flex-end;
+    margin-left: auto;
+}
+
+.custom-range::-webkit-slider-thumb {
+    background: #33b5e5;
+  }
+
+  

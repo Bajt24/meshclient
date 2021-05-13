@@ -1,0 +1,86 @@
+<!-- Material form login -->
+<div class="row d-flex h-100 justify-content-center align-items-sm-center m-0">
+<mdb-card class="col-sm-8 col-md-6 col-lg-4 col-xl-3 p-0">
+
+    <mdb-card-header class="info-color white-text text-center py-3">
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 0.5em;">
+            <img src="assets//logo.png" style="width: 2em; margin-right: 0.5em;">
+            <h2 style="margin: 0;">MESH</h2>
+        </div>
+        <button [class.selectedTab]="isJoinSelected" (click)="isJoinSelected=true" class="col-xs-6 w-50 tab" type="button"><mdb-icon fas icon="sign-in-alt"></mdb-icon> Join room</button>
+        <button [class.selectedTab]="!isJoinSelected" (click)="isJoinSelected=false" class="col-xs-6 w-50 tab selectedTab" type="button"><mdb-icon fas icon="plus"></mdb-icon> Create room</button>
+    
+        
+    </mdb-card-header>
+  
+  
+    <!--Card content-->
+    
+    <mdb-card-body *ngIf="isJoinSelected" class="px-lg-5 pt-0" class="room">
+  
+      <!-- Form -->
+        <form  class="text-center" style="color: #757575;" [formGroup]="joinForm" (ngSubmit)="onJoinSubmit(joinForm)">
+    
+            <div class="md-form" style="margin-bottom: 0;">
+                <ul *ngIf="this.rooms.length != 0">
+                    <li class="row"> 
+                        <div class="col-4">Name</div>
+                        <div class="col-4">Users</div>
+                        <div class="col-4"></div>
+                    </li>
+                    <li *ngFor="let item of this.rooms" class="row"> 
+                        <div class="col-4">{{item.name}}</div>
+                        <div class="col-4">{{item.userCount}} / <i class="fas fa-infinity"></i></div>
+                        <div class="col-4">
+                            <button mdbBtn type="button" color="info" size="sm" mdbWavesEffect [routerLink]="['/call']" [queryParams]="{id: item.key}">JOIN</button>
+                        </div>
+                    </li>
+                </ul>
+                <h5 *ngIf="this.rooms.length == 0">Unfortunately no rooms were found. <br>Create your own one :)</h5>
+                
+            </div>
+            
+        </form>
+        <!-- Form -->
+        <button mdbBtn color="info" outline="true" rounded="true" block="true" class="my-4 waves-effect z-depth-0 refreshBtn" mdbWavesEffect (click)="refreshRooms()">
+            <i class="fas fa-sync"></i> Refresh
+        </button>
+    </mdb-card-body>
+  
+    <mdb-card-body *ngIf="!isJoinSelected" class="px-lg-5 pt-0" class="room">
+  
+        <!-- Form -->
+        <form  style="color: #757575;" [formGroup]="createForm" (ngSubmit)="onCreateSubmit(createForm)" id="roomCreate">
+    
+            <div class="md-form" style="margin-top: 0;">
+                <input type="text" id="roomName" class="form-control" mdbInput formControlName="roomName">
+                <label for="roomName"><i class="fas fa-pencil-alt"></i> Room name</label>
+            </div>
+            <div class="form-group">
+                <label for="roomtype"><i class="fas fa-key"></i> Room type</label>
+
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="defaultChecked" name="isPrivate" checked mdbInput formControlName="isPrivate" [value]=false> 
+                    <label class="custom-control-label" for="defaultChecked">Public</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked" name="isPrivate" mdbInput formControlName="isPrivate" [value]=true>
+                    <label class="custom-control-label" for="defaultUnchecked" mdbTooltip="Room will be accessible only using direct link">Private (?)</label>
+                </div>
+            </div>
+            <!--
+            <div class="md-form">
+                <button [disabled]="this.createForm.value.roomName.length < 1" mdbBtn color="info" outline="true" rounded="true" block="true" class="my-4 waves-effect z-depth-0" mdbWavesEffect type="submit">Create</button>
+            </div>
+            -->
+        </form>
+        <!-- Form -->
+           
+        <button [disabled]="this.createForm.value.roomName.length < 1" mdbBtn color="info" outline="true" rounded="true" block="true" class="my-4 waves-effect z-depth-0 refreshBtn" mdbWavesEffect form="roomCreate">Create</button>
+        
+    
+      </mdb-card-body>
+
+  </mdb-card>
+  <!-- Material form login -->
+</div>

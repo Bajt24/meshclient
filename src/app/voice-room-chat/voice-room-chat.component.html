@@ -1,0 +1,18 @@
+<div id="chat" #chat [scrollTop]="chat.scrollHeight">
+   
+    <div *ngFor="let item of this.msgs" class="chatBubble" [class.leftBubble]="item.senderId != 'me'" [class.rightBubble]="item.senderId == 'me'" [class.systemBubble]="item.senderId == 'system'">
+        <div class="chatMsgHeader">
+            <p>{{item.senderId == "system" ? item.text : item.senderName}}</p>
+            <p>{{item.time | date:'H:mm'}}</p>
+        </div>
+        <p class="chatText" *ngIf="item.senderId != 'system'">
+            {{item.text}}
+        </p>
+    </div>
+</div>
+<div id="textbox">
+    <div class="md-form">
+        <input type="text" #chatInput name="msg" class="form-control" mdbInput placeholder="Type here" (keydown.enter)="sendChatMessage($event.target.value)">
+    </div>
+</div>
+

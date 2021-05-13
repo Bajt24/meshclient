@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+html,body {
+    height: 100%!important;
+}
+body {
+    background-color: lightgrey!important;
+}
+.md-form input[type=text]:focus {
+    box-shadow: 0 1px 0 0 #35b5e5!important;
+    border-bottom: 1px solid #35b5e5!important;
+}
+
+.md-form input[type=text]:focus:not([readonly]) + label {
+    color:#35b5e5!important;
+}

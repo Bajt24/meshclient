@@ -1,0 +1,21 @@
+<div mdbModal #modal="mdbModal" class="modal fade" tabindex="-1" role="dialog" [config]="{ignoreBackdropClick: true, keyboard: false}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                
+                <h4 class="modal-title w-100">Choose your display name</h4>
+            </div>
+            <form  style="color: #757575;" [formGroup]="nameForm" (ngSubmit)="onSubmit(nameForm)">
+                <div class="modal-body">
+                    <div class="md-form">
+                        <input #name type="text" id="name" class="form-control" mdbInput formControlName="name">
+                        <label for="name"><i class="fas fa-user"></i> Name</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button #continue [disabled]="isDisabled" type="submit" mdbBtn color="light" class="waves-light" >Continue</button>
+                </div>
+            </form> 
+        </div>
+    </div>
+</div>

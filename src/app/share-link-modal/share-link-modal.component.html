@@ -1,0 +1,22 @@
+<div mdbModal #modal="mdbModal" class="modal fade" tabindex="-1" role="dialog" [config]="{ignoreBackdropClick: true}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" (click)="this.modal.hide()">
+                    <span>×</span>
+                </button>
+                <h4 class="modal-title w-100">Share link with others</h4>
+            </div>
+            <div class="modal-body">
+                <div class="md-form">
+                    <input type="text" id="url" class="form-control" mdbInput [value]="this.url" readonly>
+                    <label for="url"><i class="fas fa-link"></i> Url</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                
+                <button #copyBtn type="button" mdbBtn color="primary" class="waves-light" (click)="copyToClipboard()">Copy to clipboard</button>
+            </div>
+        </div>
+    </div>
+</div>

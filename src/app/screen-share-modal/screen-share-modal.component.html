@@ -1,0 +1,24 @@
+<div mdbModal #modal="mdbModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" (click)="this.modal.hide(); this.s.stopVideo(this.s.screenStream, this.streamType);">
+                    <span>×</span>
+                </button>
+                <h4 class="modal-title w-100">Screen share </h4>
+            </div>
+            <div class="modal-body">
+                
+                <video [srcObject]="this.s.screenStream" autoplay></video>
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" mdbBtn color="primary" class="waves-light" (click)="this.retry()" mdbWavesEffect [disabled]="this.isWaiting">
+                    Retry 
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="this.isWaiting && this.s.screenStream==null" ></span>
+                </button>
+                <button type="button" mdbBtn color="light" class="waves-light" (click)="this.modal.hide(); this.s.video(this.s.screenStream, this.streamType)" mdbWavesEffect [disabled]="this.s.screenStream == null">Share</button>
+            </div>
+        </div>
+    </div>
+</div>

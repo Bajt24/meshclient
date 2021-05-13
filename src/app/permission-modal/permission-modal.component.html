@@ -1,0 +1,28 @@
+<div mdbModal #modal="mdbModal" class="modal fade" tabindex="-1" role="dialog" [config]="{ignoreBackdropClick: true, keyboard: false}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" (click)="this.modal.hide()">
+                    <span>×</span>
+                </button>
+                <h4 class="modal-title w-100">We need your permission to microphone</h4>
+            </div>
+            <div class="modal-body">
+                
+                <span id="mic"><i class="fas fa-microphone"></i></span>
+
+                
+
+                <h6>You are still able to join without one but others won't hear you</h6>
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" mdbBtn color="primary" class="waves-light" (click)="this.retry()" mdbWavesEffect [disabled]="this.isWaiting">
+                    Retry 
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="this.isWaiting" ></span>
+                </button>
+                <button type="button" mdbBtn color="light" class="waves-light" (click)="this.noMic();this.modal.hide()" mdbWavesEffect>Continue without microphone</button>
+            </div>
+        </div>
+    </div>
+</div>
